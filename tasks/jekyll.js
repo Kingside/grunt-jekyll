@@ -1,5 +1,5 @@
-/*global module*/
 'use strict';
+
 module.exports = function (grunt) {
 	var fs = require('fs');
 	var tmp = require('tmp');
@@ -41,9 +41,10 @@ module.exports = function (grunt) {
 
 		function testExists (next) {
 			var versionCommand = options.bundleExec ? 'bundle exec jekyll -v' : 'jekyll -v';
-			exec(versionCommand, function (error, stdout, stderr) {
+			exec(versionCommand, function (error, stdout) {
 
 				if (error) {
+					grunt.log.error(error);
 					grunt.fail.warn('Please install Jekyll before running this task.');
 					done(false);
 				}
@@ -98,7 +99,7 @@ module.exports = function (grunt) {
 			}
 
 			// Insert temporary config path into the config option
-			if (typeof rawConfigFile != 'undefined') {
+			if (typeof rawConfigFile !== 'undefined') {
 				options.config = options.config ? options.config + ',' + rawConfigFile : rawConfigFile;
 			}
 
@@ -121,7 +122,7 @@ module.exports = function (grunt) {
 			grunt.log.write('`' + command + '` was initiated.\n');
 
 			if (options.serve) {
-				grunt.log.write('Started Jekyll web server on http://localhost:4000. Waiting...\n');
+				grunt.log.write('Started Jekyll web server on http://localhost:' + (options.port || 4000) + '. Waiting...\n');
 			}
 
 			// exec(command, function (err, stdout) {

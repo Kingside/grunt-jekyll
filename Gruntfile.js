@@ -9,16 +9,16 @@ module.exports = function (grunt) {
 
 		jekyll: {
 			options: {
-				src: './test/app'
+				src: 'test/app'
 			},
 			actual: {
 				options: {
-					dest: './test/actual'
+					dest: 'test/actual'
 				}
 			},
 			expected : {
 				options: {
-					dest: './test/expected'
+					dest: 'test/expected'
 				}
 			},
 			serve : {
@@ -35,13 +35,25 @@ module.exports = function (grunt) {
 				reporter: 'list'
 			},
 			src: 'test/test.js'
+		},
+
+		jshint: {
+			options: {
+				jshintrc: '.jshintrc'
+			},
+			files: {
+				src: ['Gruntfile.js', 'tasks/*.js', 'test/*.js']
+			}
 		}
+
 	});
 
 	grunt.loadTasks('tasks');
+	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-mocha-test');
 
 	grunt.registerTask('test', [
+		'jshint',
 		'jekyll:expected',
 		'mochaTest'
 	]);
